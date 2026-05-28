@@ -1,39 +1,43 @@
-# AlphaForge AI
+# Nebula Command
 
-A futuristic on-chain strategy command center for crypto research, thesis generation, risk analysis, scenario simulation, and paper execution planning.
+A mission-control interface for on-chain strategy intelligence.
 
-AlphaForge AI is designed as a different product direction from Nexus Alpha: instead of a classic signal dashboard, it behaves like a strategy war room. Users enter a market thesis, review live API health, inspect market radar scores, generate strategy plans, simulate scenarios, and export a decision report.
+Nebula Command is intentionally different from a classic trading dashboard. It uses a command-center workflow:
 
-## Features
-
-- AI-style strategy generator
-- Market radar scoring
-- Portfolio battle map
-- Scenario simulator
-- Agent war room timeline
-- API live console
-- Paper execution board
-- Exportable strategy report
-- English UI with futuristic dark design
+1. Mission Inputs
+2. Signal Galaxy
+3. Asset Pulse Matrix
+4. Strategy War Room
+5. Scenario Forge
+6. Paper Intent Board
+7. Live API Console
+8. Mission Report Export
 
 ## Run locally
 
 ```bash
 pip install -r requirements.txt
-cp .env.example .env
 streamlit run app.py
 ```
 
-## Environment variables
+## Streamlit Cloud
 
-```toml
-SOSOVALUE_API_KEY="your_key"
-SOSOVALUE_BASE_URL="https://openapi.sosovalue.com/openapi/v1"
-SODEX_NETWORK="mainnet"
-SODEX_MARKET="spot"
-SODEX_API_KEY_NAME="your_key_name"
-SODEX_API_PRIVATE_KEY="your_private_key"
-DEFAULT_CAPITAL="10000"
+Main file path:
+
+```text
+app.py
 ```
 
-Live execution is disabled. AlphaForge AI is built for research, planning, simulation, and paper execution preview.
+Secrets format:
+
+```toml
+SOSOVALUE_API_KEY = "YOUR_KEY"
+SOSOVALUE_BASE_URL = "https://openapi.sosovalue.com/openapi/v1"
+SODEX_BASE_URL = "https://api.sodex.com"
+SODEX_NETWORK = "mainnet"
+SODEX_MARKET = "spot"
+SODEX_API_KEY_NAME = "YOUR_KEY_NAME"
+SODEX_API_PRIVATE_KEY = "YOUR_PRIVATE_KEY"
+```
+
+Live trading is not implemented. The app only generates paper execution plans.

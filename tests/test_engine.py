@@ -1,23 +1,29 @@
-from alphaforge.data import synthetic_market
-from alphaforge.engine import build_strategy, execution_board, scenario_matrix, score_assets
+from nebula_command.connectors import pulses_frame
+from nebula_command.engine import export_markdown, generate_mission, scenario_matrix
+from nebula_command.models import AssetPulse
 
 
-def test_score_assets_returns_scores():
-    market = {a: synthetic_market(a, 30) for a in ["BTC", "ETH", "SOL"]}
-    scores = score_assets(market)
-    assert len(scores) == 3
-    assert all(0 <= s.alpha_score <= 100 for s in scores)
+def sample_pulses():
+    return [
+        AssetPulse("BTC", 100000, 70, 80, 75, 35, 40, "TEST"),
+        AssetPulse("ETH", 4000, 55, 68, 60, 45, 50, "TEST"),
+        AssetPulse("SOL", 180, 40, 55, 45, 80, 78, "TEST"),
+    ]
 
 
-def test_build_strategy_has_allocation():
-    market = {a: synthetic_market(a, 30) for a in ["BTC", "ETH", "SOL"]}
-    plan = build_strategy("BTC ETF flow bullish", market, 10000, "balanced")
-    assert plan.allocation
-    assert plan.regime
+def test_mission_has_orders():
+    plan = generate_mission("ETF flow", sample_pulses(), 10000, "Balanced")
+    assert plan.stance in {"ACCUMULATE", "OBSERVE", "DEFENSIVE"}
+    assert len(plan.reasoning) >= 3
 
 
-def test_scenario_and_execution_frames():
-    market = {a: synthetic_market(a, 30) for a in ["BTC", "ETH", "SOL"]}
-    plan = build_strategy("risk-on rotation", market, 10000, "balanced")
-    assert not scenario_matrix(plan).empty
-    assert not execution_board(plan).empty
+def test_scenario_matrix():
+    df = scenario_matrix(sample_pulses(), "ETF inflow surge", 10000)
+    assert set(["asset", "adjusted_score", "paper_exposure_usd"]).issubset(df.columns)
+    assert len(df) == 3
+
+
+def test_export_report():
+    plan = generate_mission("test", sample_pulses(), 10000, "Stealth")
+    report = export_markdown(plan)
+    assert "Nebula Command Strategy Report" in report
